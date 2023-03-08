@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsoleApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230302110214_InitDatabase")]
+    [Migration("20230308114553_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -124,9 +124,6 @@ namespace ConsoleApp.Migrations
                         .HasColumnType("char(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Janitors");
                 });

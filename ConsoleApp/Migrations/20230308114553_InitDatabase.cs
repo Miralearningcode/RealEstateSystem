@@ -73,12 +73,6 @@ namespace ConsoleApp.Migrations
                 name: "IX_ErrorReports_ApartmentId",
                 table: "ErrorReports",
                 column: "ApartmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Janitors_Email",
-                table: "Janitors",
-                column: "Email",
-                unique: true);
         }
 
         /// <inheritdoc />

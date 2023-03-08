@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ConsoleApp.Models.Entities
 {
-    [Index(nameof(Email), IsUnique = true)]
     internal class JanitorEntity
     {
         [Key]

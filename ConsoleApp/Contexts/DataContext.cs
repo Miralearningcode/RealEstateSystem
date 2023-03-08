@@ -6,7 +6,7 @@ namespace ConsoleApp.Contexts
     //Denna klass har hand om kommunikationen mellan databasen och mina modeller
     internal class DataContext : DbContext
     {
-        private readonly string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\miraw\Desktop\Datalagring\RealEstateSystem\ConsoleApp\Contexts\sql-db.mdf;Integrated Security=True;Connect Timeout=30";
+        private readonly string _connectionString = @"";
 
         #region constructors
         public DataContext()

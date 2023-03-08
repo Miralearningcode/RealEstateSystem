@@ -152,5 +152,30 @@ namespace ConsoleApp.Services
                 Console.WriteLine("Ingen email angiven");
             }
         }
+
+        public async Task CreateNewJanitorAsync()
+        {
+            var janitor = new Janitor();
+
+            Console.Write("Förnamn: ");
+            janitor.FirstName = Console.ReadLine() ?? "";
+
+            Console.Write("Efternamn: ");
+            janitor.LastName = Console.ReadLine() ?? "";
+
+            Console.Write("Email: ");
+            janitor.Email = Console.ReadLine() ?? "";
+
+            Console.Write("Telefonnummer: ");
+            janitor.PhoneNumber = Console.ReadLine() ?? "";
+
+
+            //save apartment to database
+            await JanitorService.SaveAsync(janitor);
+
+            Console.WriteLine();
+            Console.WriteLine("En ny fastighetskötare är nu tillagd i systemet, tryck på valfri tangent för att återgå till huvudmenyn");
+        }
+
     }
 }
