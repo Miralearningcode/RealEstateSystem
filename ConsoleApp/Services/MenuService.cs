@@ -32,6 +32,9 @@ namespace ConsoleApp.Services
             Console.Write("Stad: ");
             errorReport.City = Console.ReadLine() ?? "";
 
+            Console.Write("Lägenhetens unika serienummer (6 siffror) ");
+            errorReport.ApartmentSerialNumber = Console.ReadLine() ?? "";
+
             Console.Write("Beskrivning av ärendet: ");
             errorReport.Description = Console.ReadLine() ?? "";
 
@@ -55,7 +58,7 @@ namespace ConsoleApp.Services
                 foreach (ErrorReport errorReport in errorReports)
                 {
                     //KOLLA OM JAG SKA HA NÅGOT MER HÄR
-                    Console.WriteLine($"LägenhetsId: {errorReport.Id}");
+                    Console.WriteLine($"Lägenhetens unika serienummer: {errorReport.ApartmentSerialNumber}");
                     Console.WriteLine($"Anmälan skapades med email: {errorReport.Email}");
                     Console.WriteLine($"Anmälan skapades: {errorReport.Created}");
                     Console.WriteLine($"Ärendestatus: {errorReport.Status}");
@@ -72,13 +75,13 @@ namespace ConsoleApp.Services
 
         public async Task ListSpecificErrorReportAsync()
         {
-            Console.Write("Ange email: ");
-            var email = Console.ReadLine();
+            Console.Write("Ange lägenhetens unika serienummer (6 siffror): ");
+            var apartmentSerialNumber = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(email))
+            if (!string.IsNullOrEmpty(apartmentSerialNumber))
             {
                 //get specific apartment from database
-                var errorReport = await ErrorReportService.GetAsync(email);
+                var errorReport = await ErrorReportService.GetAsync(apartmentSerialNumber);
 
                 if (errorReport != null)
                 {
@@ -95,23 +98,23 @@ namespace ConsoleApp.Services
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine($"Finns ingen felanmälan skapad med denna email: {email} ");
+                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber} ");
                 }
             }
             else
             {
-                Console.WriteLine("Ingen email angiven");
+                Console.WriteLine("Inget serienummer angivet");
             }
         }
 
         public async Task UpdateSpecificErrorReportAsync()
         {
-            Console.Write("Ange email: ");
-            var email = Console.ReadLine();
+            Console.Write("Ange lägenhetens unika serienummer (6 siffror): ");
+            var apartmentSerialNumber = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(email))
+            if (!string.IsNullOrEmpty(apartmentSerialNumber))
             {
-                var errorReport = await ErrorReportService.GetAsync(email);
+                var errorReport = await ErrorReportService.GetAsync(apartmentSerialNumber);
                 if (errorReport != null)
                 {
                     Console.WriteLine("Uppdatera status (Ej påbörjad, pågående, avslutad):");
@@ -126,30 +129,30 @@ namespace ConsoleApp.Services
                 }
                 else
                 {
-                    Console.WriteLine($"Finns ingen felanmälan skapad med denna email: {email}");
+                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber}");
                 }
             }
             else
             {
-                Console.WriteLine("Inget emailangiven");
+                Console.WriteLine("Inget serienummer angivet");
             }
         }
 
         public async Task DeleteSpecificErrorReportAsync()
         {
-            Console.Write("Ange email: ");
-            var email = Console.ReadLine();
+            Console.Write("Ange lägenhetens unika serienummer (6 siffror): ");
+            var apartmentSerialNumber = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(email))
+            if (!string.IsNullOrEmpty(apartmentSerialNumber))
             {
                 //delete specific apartment from database
-                await ErrorReportService.DeleteAsync(email);
+                await ErrorReportService.DeleteAsync(apartmentSerialNumber);
                 Console.WriteLine();
                 Console.WriteLine("Felanmälan är nu borttagen ur systemet, tryck på valfri tangent för att återgå till huvudmenyn");
             }
             else
             {
-                Console.WriteLine("Ingen email angiven");
+                Console.WriteLine("Inget serienummer angivet");
             }
         }
 
@@ -175,6 +178,39 @@ namespace ConsoleApp.Services
 
             Console.WriteLine();
             Console.WriteLine("En ny fastighetskötare är nu tillagd i systemet, tryck på valfri tangent för att återgå till huvudmenyn");
+        }
+
+        //NY
+        public async Task CreateNewCommentAsync()
+        {
+            Console.Write("Ange lägenhetens unika 6 siffriga serienummer: ");
+            var apartmentSerialNumber = Console.ReadLine();
+
+            if (!string.IsNullOrEmpty(apartmentSerialNumber))
+            {
+                //get specific apartment from database
+                var comment = await CommentService.GetAsync(apartmentSerialNumber);
+
+                if (comment != null)
+                {
+                    Console.Write("Kommentar: ");
+                    comment.Text = Console.ReadLine() ?? "";
+                    //save commentto database
+                    await ErrorReportService.SaveAsync(comment);
+                    Console.WriteLine("En ny kommentar har skapats för ärendet, tryck på valfri tangent för att återgå till huvudmenyn");
+
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber} ");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Inget serienummer angivet");
+            }
+
         }
 
     }

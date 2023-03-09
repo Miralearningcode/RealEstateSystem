@@ -16,25 +16,26 @@ namespace ConsoleApp.Services
         {
             var _errorReportEntity = new ErrorReportEntity
             {
-                FirstName = errorReport.FirstName,
-                LastName = errorReport.LastName,
-                Email = errorReport.Email,
-                PhoneNumber = errorReport.PhoneNumber,
                 Description = errorReport.Description,
-                Created = errorReport.Created = DateTime.Now, //SKA DENNA VARA MED HÄR?
+                Created = errorReport.Created = DateTime.Now, 
                 Status = errorReport.Status
             };
 
-            var _apartmentEntity = await _context.Apartments.FirstOrDefaultAsync(x => x.StreetName == errorReport.StreetName && x.StreetNumber == errorReport.StreetNumber && x.PostalCode == errorReport.PostalCode && x.City == errorReport.City);
-            if (_apartmentEntity != null)
-                _errorReportEntity.ApartmentId = _apartmentEntity.Id;
+            var _tenantEntity = await _context.Tenants.FirstOrDefaultAsync(x => x.FirstName == errorReport.FirstName && x.LastName == errorReport.LastName && x.Email == errorReport.Email && x.PhoneNumber == errorReport.PhoneNumber && x.StreetName == errorReport.StreetName && x.StreetNumber == errorReport.StreetNumber && x.PostalCode == errorReport.PostalCode && x.City == errorReport.City && x.ApartmentSerialNumber == errorReport.ApartmentSerialNumber);
+            if (_tenantEntity != null)
+                _errorReportEntity.TenantId = _tenantEntity.Id;
             else
-                _errorReportEntity.Apartment = new ApartmentEntity
+                _errorReportEntity.Tenant = new TenantEntity
                 {
+                    FirstName = errorReport.FirstName,
+                    LastName = errorReport.LastName,
+                    Email = errorReport.Email,
+                    PhoneNumber = errorReport.PhoneNumber,
                     StreetName = errorReport.StreetName,
                     StreetNumber = errorReport.StreetNumber,
                     PostalCode = errorReport.PostalCode,
-                    City = errorReport.City
+                    City = errorReport.City,
+                    ApartmentSerialNumber = errorReport.ApartmentSerialNumber
                 };
 
 
@@ -48,43 +49,45 @@ namespace ConsoleApp.Services
         {
             var _errorReports = new List<ErrorReport>();
 
-            foreach (var _errorReport in await _context.ErrorReports.Include(x => x.Apartment).ToListAsync())
+            foreach (var _errorReport in await _context.ErrorReports.Include(x => x.Tenant).ToListAsync())
                 _errorReports.Add(new ErrorReport
                 {
                     Id = _errorReport.Id,
-                    FirstName = _errorReport.FirstName,
-                    LastName = _errorReport.LastName,
-                    Email = _errorReport.Email,
-                    PhoneNumber = _errorReport.PhoneNumber,
-                    StreetName = _errorReport.Apartment.StreetName, //Apartment
-                    StreetNumber = _errorReport.Apartment.StreetNumber,//Apartment
-                    PostalCode = _errorReport.Apartment.PostalCode,//Apartment
-                    City = _errorReport.Apartment.City,//Apartment
+                    FirstName = _errorReport.Tenant.FirstName, //Tenant
+                    LastName = _errorReport.Tenant.LastName, //Tenant
+                    Email = _errorReport.Tenant.Email, //Tenant
+                    PhoneNumber = _errorReport.Tenant.PhoneNumber, //Tenant
+                    StreetName = _errorReport.Tenant.StreetName, //Tenant
+                    StreetNumber = _errorReport.Tenant.StreetNumber, //Tenant
+                    PostalCode = _errorReport.Tenant.PostalCode, //Tenant
+                    City = _errorReport.Tenant.City, //Tenant
+                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, //Tenant
                     Description = _errorReport.Description,
-                    Created = _errorReport.Created, //SKA DENNA VARA MED?
-                    Status = _errorReport.Status,
+                    Created = _errorReport.Created, 
+                    Status = _errorReport.Status
                 });
             return _errorReports;
         }
 
         //GetAsync
-        public static async Task<ErrorReport> GetAsync(string email)
+        public static async Task<ErrorReport> GetAsync(string apartmentSerialNumber)
         {
-            var _errorReport = await _context.ErrorReports.Include(x => x.Apartment).FirstOrDefaultAsync(x => x.Email == email);
+            var _errorReport = await _context.ErrorReports.Include(x => x.Tenant).FirstOrDefaultAsync(x => x.Tenant.ApartmentSerialNumber == apartmentSerialNumber);
             if (_errorReport != null)
                 return new ErrorReport
                 {
                     Id = _errorReport.Id,
-                    FirstName = _errorReport.FirstName,
-                    LastName = _errorReport.LastName,
-                    Email = _errorReport.Email,
-                    PhoneNumber = _errorReport.PhoneNumber,
-                    StreetName = _errorReport.Apartment.StreetName, //Apartment
-                    StreetNumber = _errorReport.Apartment.StreetNumber,//Apartment
-                    PostalCode = _errorReport.Apartment.PostalCode,//Apartment
-                    City = _errorReport.Apartment.City,//Apartment
+                    FirstName = _errorReport.Tenant.FirstName, //Tenant
+                    LastName = _errorReport.Tenant.LastName, //Tenant
+                    Email = _errorReport.Tenant.Email, //Tenant
+                    PhoneNumber = _errorReport.Tenant.PhoneNumber, //Tenant
+                    StreetName = _errorReport.Tenant.StreetName, //Tenant
+                    StreetNumber = _errorReport.Tenant.StreetNumber, //Tenant
+                    PostalCode = _errorReport.Tenant.PostalCode, //Tenant
+                    City = _errorReport.Tenant.City, //Tenant
+                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, //Tenant
                     Description = _errorReport.Description,
-                    Created = _errorReport.Created, //SKA DENNA VARA MED?
+                    Created = _errorReport.Created, 
                     Status = _errorReport.Status
                 };
             else
@@ -95,7 +98,7 @@ namespace ConsoleApp.Services
         //UpdateAsync
         public static async Task UpdateAsync(ErrorReport errorReport)
         {
-            var _errorReportEntity = await _context.ErrorReports.Include(x => x.Apartment).FirstOrDefaultAsync(x => x.Id == errorReport.Id);
+            var _errorReportEntity = await _context.ErrorReports.Include(x => x.Tenant).FirstOrDefaultAsync(x => x.Id == errorReport.Id);
             if (_errorReportEntity != null)
             {
                 if (!string.IsNullOrEmpty(errorReport.Status))
@@ -108,9 +111,9 @@ namespace ConsoleApp.Services
 
 
         //DeleteAsync
-        public static async Task DeleteAsync(string email)  
+        public static async Task DeleteAsync(string apartmentSerialNumber)  
         {
-            var _errorReport = await _context.ErrorReports.Include(x => x.Apartment).FirstOrDefaultAsync(x => x.Email == email);
+            var _errorReport = await _context.ErrorReports.Include(x => x.Tenant).FirstOrDefaultAsync(x => x.Tenant.ApartmentSerialNumber == apartmentSerialNumber);
             if (_errorReport != null)
             {
                 _context.Remove(_errorReport);

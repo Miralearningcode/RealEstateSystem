@@ -10,7 +10,9 @@ while (true)
     Console.WriteLine("3.Visa en specifik felanmälan");
     Console.WriteLine("4.Uppdatera status på felanmälan");
     Console.WriteLine("5.Ta bort en felanmälan");
-    Console.WriteLine("6. Lägg till en fastighetsskötare");
+    Console.WriteLine("6.Lägg till en fastighetsskötare");
+    Console.WriteLine("7.Lägg till en kommentar till en felanmälan");
+    //Console.WriteLine("8. Se kommentar till en felanmälan");
     Console.Write("\nVälj ett av följande alternativ:");
 
     switch (Console.ReadLine())
@@ -43,6 +45,11 @@ while (true)
         case "6":
             Console.Clear();
             await menu.CreateNewJanitorAsync();
+            break;
+
+        case "7":
+            Console.Clear();
+            await menu.CreateNewCommentAsync();
             break;
     }
 

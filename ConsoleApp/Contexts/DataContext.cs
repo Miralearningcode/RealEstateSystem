@@ -6,7 +6,7 @@ namespace ConsoleApp.Contexts
     //Denna klass har hand om kommunikationen mellan databasen och mina modeller
     internal class DataContext : DbContext
     {
-        private readonly string _connectionString = @"";
+        private readonly string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\miraw\Desktop\Datalagring\RealEstateSystem\ConsoleApp\Contexts\sql-db.mdf;Integrated Security=True;Connect Timeout=30";
 
         #region constructors
         public DataContext()
@@ -30,10 +30,16 @@ namespace ConsoleApp.Contexts
 
         #region entities
 
-        public DbSet<ApartmentEntity> Apartments { get; set; } = null!;
-        public DbSet<ErrorReportEntity> ErrorReports { get; set; } = null!; 
-        public DbSet<JanitorEntity> Janitors { get; set;} = null!;
+        public DbSet<CommentEntity> Comments { get; set; } = null!;
 
+        public DbSet<ErrorReportEntity> ErrorReports { get; set; } = null!;
+
+        public DbSet<JanitorEntity> Janitors { get; set; } = null!;
+
+        public DbSet<TenantEntity> Tenants { get; set; } = null!;
+        
+        
+        
 
         #endregion
     }

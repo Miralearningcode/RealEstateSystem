@@ -22,7 +22,7 @@ namespace ConsoleApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ConsoleApp.Models.Entities.ApartmentEntity", b =>
+            modelBuilder.Entity("ConsoleApp.Models.Entities.CommentEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,25 +30,21 @@ namespace ConsoleApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("char(6)");
+                    b.Property<int>("ErrorReportId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("StreetName")
+                    b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("StreetNumber")
-                        .IsRequired()
-                        .HasColumnType("char(4)");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apartments");
+                    b.HasIndex("ErrorReportId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("ConsoleApp.Models.Entities.ErrorReportEntity", b =>
@@ -59,9 +55,6 @@ namespace ConsoleApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -69,29 +62,16 @@ namespace ConsoleApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("char(20)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ApartmentId");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("ErrorReports");
                 });
@@ -125,15 +105,75 @@ namespace ConsoleApp.Migrations
                     b.ToTable("Janitors");
                 });
 
-            modelBuilder.Entity("ConsoleApp.Models.Entities.ErrorReportEntity", b =>
+            modelBuilder.Entity("ConsoleApp.Models.Entities.TenantEntity", b =>
                 {
-                    b.HasOne("ConsoleApp.Models.Entities.ApartmentEntity", "Apartment")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApartmentSerialNumber")
+                        .IsRequired()
+                        .HasColumnType("char(6)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("char(20)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("char(6)");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("StreetNumber")
+                        .IsRequired()
+                        .HasColumnType("char(4)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tenants");
+                });
+
+            modelBuilder.Entity("ConsoleApp.Models.Entities.CommentEntity", b =>
+                {
+                    b.HasOne("ConsoleApp.Models.Entities.ErrorReportEntity", "ErrorReport")
                         .WithMany()
-                        .HasForeignKey("ApartmentId")
+                        .HasForeignKey("ErrorReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Apartment");
+                    b.Navigation("ErrorReport");
+                });
+
+            modelBuilder.Entity("ConsoleApp.Models.Entities.ErrorReportEntity", b =>
+                {
+                    b.HasOne("ConsoleApp.Models.Entities.TenantEntity", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 #pragma warning restore 612, 618
         }
