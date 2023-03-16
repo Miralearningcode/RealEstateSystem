@@ -1,11 +1,6 @@
 ﻿using ConsoleApp.Contexts;
 using ConsoleApp.Models.Entities;
 using ConsoleApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleApp.Services
@@ -15,28 +10,36 @@ namespace ConsoleApp.Services
         private static DataContext _context = new DataContext();
 
         //SaveAsync
-        
+        public static async Task SaveAsync(Comment comment)
+        {
+            var errorReportEntity = await _context.ErrorReports.FindAsync(comment.ErrorReportId);
+
+            if (errorReportEntity == null)
+            {
+               
+            }
+
+            var _commentEntity = new CommentEntity
+            {
+                Text = comment.Text,
+                TimeStamp = DateTime.Now
+            };
+
+            errorReportEntity.Comments.Add(_commentEntity);
+
+            await _context.SaveChangesAsync();
+        }
 
         //GetAsync
-        public static async Task<ErrorReport> GetAsync(string apartmentSerialNumber)
+        public static async Task<Comment> GetAsync(string apartmentSerialNumber)
         {
-            var _errorReport = await _context.ErrorReports.Include(x => x.Tenant).FirstOrDefaultAsync(x => x.Tenant.ApartmentSerialNumber == apartmentSerialNumber);
-            if (_errorReport != null)
-                return new ErrorReport
+            var _comment = await _context.Comments.Include(x => x.ErrorReport).FirstOrDefaultAsync(x => x.ErrorReport.Tenant.ApartmentSerialNumber == apartmentSerialNumber);
+            if (_comment != null)
+                return new Comment
                 {
-                    Id = _errorReport.Id,
-                    FirstName = _errorReport.Tenant.FirstName, //Tenant
-                    LastName = _errorReport.Tenant.LastName, //Tenant
-                    Email = _errorReport.Tenant.Email, //Tenant
-                    PhoneNumber = _errorReport.Tenant.PhoneNumber, //Tenant
-                    StreetName = _errorReport.Tenant.StreetName, //Tenant
-                    StreetNumber = _errorReport.Tenant.StreetNumber, //Tenant
-                    PostalCode = _errorReport.Tenant.PostalCode, //Tenant
-                    City = _errorReport.Tenant.City, //Tenant
-                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, //Tenant
-                    Description = _errorReport.Description,
-                    Created = _errorReport.Created, 
-                    Status = _errorReport.Status
+                    Id = _comment.Id,
+                    Text = _comment.Text,
+                    TimeStamp = _comment.TimeStamp
                 };
             else
                 return null!;

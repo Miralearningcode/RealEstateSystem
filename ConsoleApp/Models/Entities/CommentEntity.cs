@@ -19,7 +19,7 @@ namespace ConsoleApp.Models.Entities
         public string Text { get; set; } = null!;
 
         [Column(TypeName = "datetime2")]
-        public DateTime Created { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         [Required]
         public int ErrorReportId { get; set; } //FK

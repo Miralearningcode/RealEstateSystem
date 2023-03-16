@@ -10,6 +10,8 @@ namespace ConsoleApp.Models
     {
         public int Id { get; set; } //PK
         public string Text { get; set; } = null!;
-        public DateTime Created { get; set; }
+        public DateTime TimeStamp { get; set; }
+
+        public int ErrorReportId { get; set; }
     }
 }

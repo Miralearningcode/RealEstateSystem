@@ -77,7 +77,7 @@ namespace ConsoleApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ErrorReportId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

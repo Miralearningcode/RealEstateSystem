@@ -57,19 +57,17 @@ namespace ConsoleApp.Services
             {
                 foreach (ErrorReport errorReport in errorReports)
                 {
-                    //KOLLA OM JAG SKA HA NÅGOT MER HÄR
                     Console.WriteLine($"Lägenhetens unika serienummer: {errorReport.ApartmentSerialNumber}");
                     Console.WriteLine($"Anmälan skapades med email: {errorReport.Email}");
                     Console.WriteLine($"Anmälan skapades: {errorReport.Created}");
                     Console.WriteLine($"Ärendestatus: {errorReport.Status}");
                     Console.WriteLine();
-                    Console.WriteLine("Tryck på valfri tangent för att återgå till huvudmenyn");
                 }
             }
             else
             {
                 Console.WriteLine();
-                Console.WriteLine("Ingen felanmälan finns registrerad i databasen");
+                Console.WriteLine("Ingen felanmälan finns registrerad i databasen, tryck på valfri tangent för att återgå till huvudmenyn");
             }
         }
 
@@ -85,10 +83,10 @@ namespace ConsoleApp.Services
 
                 if (errorReport != null)
                 {
-                    //KOLLA OM NÅGOT MER SKA LISTAS HÄR!
                     Console.WriteLine($"LägenhetsId: {errorReport.Id}");
                     Console.WriteLine($"Anmälarens namn: {errorReport.FirstName} {errorReport.LastName}");
-                    Console.WriteLine($"Anmälarens email & telefonnummer: {errorReport.Email} {errorReport.PhoneNumber}");
+                    Console.WriteLine($"Anmälarens email: {errorReport.Email}");
+                    Console.WriteLine($"Anmälarens telefonnummer:{errorReport.PhoneNumber}");
                     Console.WriteLine($"Beskrivning av ärendet: {errorReport.Description}");
                     Console.WriteLine($"Anmälan skapades: {errorReport.Created}");
                     Console.WriteLine($"Ärendestatus: {errorReport.Status}");
@@ -98,12 +96,12 @@ namespace ConsoleApp.Services
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber} ");
+                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber}, tryck på valfri tangent för att återgå till huvudmenyn ");
                 }
             }
             else
             {
-                Console.WriteLine("Inget serienummer angivet");
+                Console.WriteLine("Inget serienummer angivet, tryck på valfri tangent för att återgå till huvudmenyn");
             }
         }
 
@@ -129,12 +127,12 @@ namespace ConsoleApp.Services
                 }
                 else
                 {
-                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber}");
+                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber}, tryck på valfri tangent för att återgå till huvudmenyn");
                 }
             }
             else
             {
-                Console.WriteLine("Inget serienummer angivet");
+                Console.WriteLine("Inget serienummer angivet, tryck på valfri tangent för att återgå till huvudmenyn");
             }
         }
 
@@ -145,14 +143,26 @@ namespace ConsoleApp.Services
 
             if (!string.IsNullOrEmpty(apartmentSerialNumber))
             {
-                //delete specific apartment from database
-                await ErrorReportService.DeleteAsync(apartmentSerialNumber);
-                Console.WriteLine();
-                Console.WriteLine("Felanmälan är nu borttagen ur systemet, tryck på valfri tangent för att återgå till huvudmenyn");
+                
+
+                Console.Write($"Vill du verkligen ta bort felanmälan för lägenhet { apartmentSerialNumber}? (j/n): ");
+                var key = Console.ReadLine();
+                if (key == "j")
+                {
+                    //delete specific apartment from database
+                    await ErrorReportService.DeleteAsync(apartmentSerialNumber);
+                    Console.WriteLine();
+                    Console.WriteLine("Felanmälan är nu borttagen ur systemet, tryck på valfri tangent för att återgå till huvudmenyn");
+
+                }
+                else if (key == "n")
+                {
+                    Console.WriteLine($"Felanmälan för lägenhet {apartmentSerialNumber} har inte tagits bort, tryck på valfri tangent för att återgå till huvudmenyn");
+                }
             }
             else
             {
-                Console.WriteLine("Inget serienummer angivet");
+                Console.WriteLine("Inget serienummer angivet, tryck på valfri tangent för att återgå till huvudmenyn");
             }
         }
 
@@ -180,37 +190,17 @@ namespace ConsoleApp.Services
             Console.WriteLine("En ny fastighetskötare är nu tillagd i systemet, tryck på valfri tangent för att återgå till huvudmenyn");
         }
 
-        //NY
+    
         public async Task CreateNewCommentAsync()
         {
-            Console.Write("Ange lägenhetens unika 6 siffriga serienummer: ");
-            var apartmentSerialNumber = Console.ReadLine();
+            var comment = new Comment();
 
-            if (!string.IsNullOrEmpty(apartmentSerialNumber))
-            {
-                //get specific apartment from database
-                var comment = await CommentService.GetAsync(apartmentSerialNumber);
+            Console.Write("Kommentar: ");
+            comment.Text = Console.ReadLine() ?? "";
 
-                if (comment != null)
-                {
-                    Console.Write("Kommentar: ");
-                    comment.Text = Console.ReadLine() ?? "";
-                    //save commentto database
-                    await ErrorReportService.SaveAsync(comment);
-                    Console.WriteLine("En ny kommentar har skapats för ärendet, tryck på valfri tangent för att återgå till huvudmenyn");
 
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine($"Finns ingen felanmälan skapad med detta serienummer: {apartmentSerialNumber} ");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Inget serienummer angivet");
-            }
-
+            //save comment to database
+            await CommentService.SaveAsync(comment);
         }
 
     }

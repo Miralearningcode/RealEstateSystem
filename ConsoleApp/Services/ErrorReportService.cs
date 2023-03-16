@@ -53,15 +53,15 @@ namespace ConsoleApp.Services
                 _errorReports.Add(new ErrorReport
                 {
                     Id = _errorReport.Id,
-                    FirstName = _errorReport.Tenant.FirstName, //Tenant
-                    LastName = _errorReport.Tenant.LastName, //Tenant
-                    Email = _errorReport.Tenant.Email, //Tenant
-                    PhoneNumber = _errorReport.Tenant.PhoneNumber, //Tenant
-                    StreetName = _errorReport.Tenant.StreetName, //Tenant
-                    StreetNumber = _errorReport.Tenant.StreetNumber, //Tenant
-                    PostalCode = _errorReport.Tenant.PostalCode, //Tenant
-                    City = _errorReport.Tenant.City, //Tenant
-                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, //Tenant
+                    FirstName = _errorReport.Tenant.FirstName, 
+                    LastName = _errorReport.Tenant.LastName,
+                    Email = _errorReport.Tenant.Email, 
+                    PhoneNumber = _errorReport.Tenant.PhoneNumber, 
+                    StreetName = _errorReport.Tenant.StreetName, 
+                    StreetNumber = _errorReport.Tenant.StreetNumber, 
+                    PostalCode = _errorReport.Tenant.PostalCode, 
+                    City = _errorReport.Tenant.City, 
+                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, 
                     Description = _errorReport.Description,
                     Created = _errorReport.Created, 
                     Status = _errorReport.Status
@@ -77,15 +77,15 @@ namespace ConsoleApp.Services
                 return new ErrorReport
                 {
                     Id = _errorReport.Id,
-                    FirstName = _errorReport.Tenant.FirstName, //Tenant
-                    LastName = _errorReport.Tenant.LastName, //Tenant
-                    Email = _errorReport.Tenant.Email, //Tenant
-                    PhoneNumber = _errorReport.Tenant.PhoneNumber, //Tenant
-                    StreetName = _errorReport.Tenant.StreetName, //Tenant
-                    StreetNumber = _errorReport.Tenant.StreetNumber, //Tenant
-                    PostalCode = _errorReport.Tenant.PostalCode, //Tenant
-                    City = _errorReport.Tenant.City, //Tenant
-                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, //Tenant
+                    FirstName = _errorReport.Tenant.FirstName, 
+                    LastName = _errorReport.Tenant.LastName, 
+                    Email = _errorReport.Tenant.Email, 
+                    PhoneNumber = _errorReport.Tenant.PhoneNumber, 
+                    StreetName = _errorReport.Tenant.StreetName, 
+                    StreetNumber = _errorReport.Tenant.StreetNumber, 
+                    PostalCode = _errorReport.Tenant.PostalCode, 
+                    City = _errorReport.Tenant.City, 
+                    ApartmentSerialNumber = _errorReport.Tenant.ApartmentSerialNumber, 
                     Description = _errorReport.Description,
                     Created = _errorReport.Created, 
                     Status = _errorReport.Status
@@ -104,7 +104,7 @@ namespace ConsoleApp.Services
                 if (!string.IsNullOrEmpty(errorReport.Status))
                     _errorReportEntity.Status = errorReport.Status;
 
-                _context.Entry(_errorReportEntity).State = EntityState.Modified; //_context.Update(_errorReportEntity); //ÄNDRA HÄR OM DET INTE FUNKAR
+                _context.Entry(_errorReportEntity).State = EntityState.Modified; 
                 await _context.SaveChangesAsync();
             }
         }

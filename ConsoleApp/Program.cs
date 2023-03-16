@@ -5,15 +5,17 @@ var menu = new MenuService();
 while (true)
 {
     Console.Clear();
-    Console.WriteLine("1.Lägg till en felanmälan");
-    Console.WriteLine("2.Visa alla felanmälningar");
-    Console.WriteLine("3.Visa en specifik felanmälan");
-    Console.WriteLine("4.Uppdatera status på felanmälan");
-    Console.WriteLine("5.Ta bort en felanmälan");
-    Console.WriteLine("6.Lägg till en fastighetsskötare");
-    Console.WriteLine("7.Lägg till en kommentar till en felanmälan");
+    Console.WriteLine("MW FASTIGHETER AB");
+    Console.WriteLine("_____________________________________");
+    Console.WriteLine("\n1.Lägg till en felanmälan");
+    Console.WriteLine("\n2.Visa alla felanmälningar");
+    Console.WriteLine("\n3.Visa en specifik felanmälan");
+    Console.WriteLine("\n4.Uppdatera status på felanmälan");
+    Console.WriteLine("\n5.Ta bort en felanmälan");
+    Console.WriteLine("\n6.Lägg till en fastighetsskötare");
+    Console.WriteLine("\n7.Lägg till en kommentar till en felanmälan");
     //Console.WriteLine("8. Se kommentar till en felanmälan");
-    Console.Write("\nVälj ett av följande alternativ:");
+    Console.Write("\nVälj ett alternativ från ovan:");
 
     switch (Console.ReadLine())
     {
@@ -53,7 +55,7 @@ while (true)
             break;
     }
 
-    //Console.WriteLine("Tryck på valfri knapp för att återgå till huvudmenyn");
+    
     Console.ReadKey();
 
 }

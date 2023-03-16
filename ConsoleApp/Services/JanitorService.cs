@@ -20,11 +20,6 @@ namespace ConsoleApp.Services
                 PhoneNumber = janitor.PhoneNumber
             };
 
-            //_janitorEntity = await _context.Janitors.FirstOrDefaultAsync(x => x.FirstName == janitor.FirstName && x.LastName == janitor.LastName && x.Email == janitor.Email && x.PhoneNumber == janitor.PhoneNumber);
-            //if (_janitorEntity != null) 
-
-            //else
-
                 _context.Add(_janitorEntity);
             await _context.SaveChangesAsync();
 
